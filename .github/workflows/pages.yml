@@ -1,0 +1,28 @@
+name: GitHub Pages Actions
+run-name: ${{ github.actor }} is building Pages with GitHub Actions 🚀
+on: [push]
+jobs:
+  GitHub-Pages:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.8.1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: npm i
+      - run: npm run build:pages --if-present
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4.4.3
+        with:
+          folder: dist/angular-ngrx-signals # The folder the action should deploy.
+          token: ${{ secrets.GH_TOKEN }} # GitHub token granted the repo scope.
+      - run: echo "Github Pages deployed ⚡"
